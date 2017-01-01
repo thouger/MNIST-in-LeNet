@@ -18,7 +18,7 @@ Activation 2: Your choice of activation function.
 
 Pooling layer 2: The output shape should be 5x5x16.
 
-Flatten layer: Flatten the output shape of the final pooling layer such that it's 1D instead of 3D. The easiest way to do is by using tf.contrib.layers.flatten, which is already imported for you.
+Flatten layer: Flatten the output shape of the final pooling layer such that it's 1D instead of 3D. 
 
 Fully connected layer 1: This should have 120 outputs.
 
