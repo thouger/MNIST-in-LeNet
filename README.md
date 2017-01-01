@@ -1,23 +1,25 @@
-# CarND-LeNet-Lab
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
-
 ![LeNet-5 Architecture](lenet.png)
 Implement the LeNet-5 deep neural network model.
 
-### Dependencies
-This lab requires:
+Specs
+Convolution layer 1. The output shape should be 28x28x6.
 
-* [TensorFlow](https://www.tensorflow.org/)
+Activation 1. Your choice of activation function.
 
-Use [Anaconda](https://www.continuum.io/downloads) to install the dependencies:
+Pooling layer 1. The output shape should be 14x14x6.
 
-1. `conda env create -f environment.yml`
-2. `source activate CarND-LeNet-Lab`
+Convolution layer 2. The output shape should be 10x10x16.
 
-### GPU
-If you have access to an NVIDIA GPU, you can accelerate the training of your network by using TensorFlow on a GPU.
+Activation 2. Your choice of activation function.
 
-1. Install the core dependencies (see above)
-2. Install [CUDA](https://developer.nvidia.com/cuda-downloads)
-3. Install [cuDNN](https://developer.nvidia.com/cudnn)
-4. Install TensorFlow with GPU support: `pip install tensorflow-gpu`
+Pooling layer 2. The output shape should be 5x5x16.
+
+Flatten layer. Flatten the output shape of the final pooling layer such that it's 1D instead of 3D. The easiest way to do is by using tf.contrib.layers.flatten, which is already imported for you.
+
+Fully connected layer 1. This should have 120 outputs.
+
+Activation 3. Your choice of activation function.
+
+Fully connected layer 2. This should have 10 outputs.
+
+Return the result of the 2nd fully connected layer from the LeNet function.
