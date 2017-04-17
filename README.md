@@ -1,4 +1,4 @@
-Implementation of the LeNet-5 deep neural network model.
+# Implementation of the LeNet-5 deep neural network model.
 
 ![LeNet-5 Architecture](lenet.png)
 
