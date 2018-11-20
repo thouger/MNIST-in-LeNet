@@ -11,4 +11,4 @@
 6.计算cnn最后一层的softmax以及cross entropy，用softmax_cross_entropy_with_logits
 7.用reduce_mean计算向量平均值
 8.使用AdamOptimizer自适应优化算法优化最小值（这里应该也可以用SGD）
-9.计算准确度和精确度
+9.计算准确度和精确度(计算预测值与实际值的偏差)
