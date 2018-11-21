@@ -4,47 +4,18 @@ import tensorflow as tf
 import numpy as np
 from sklearn.utils import shuffle
 from tensorflow.contrib.layers import flatten
-import pandas as pd
-from tensorflow.contrib.learn.python.learn.estimators._sklearn import train_test_split
+from tensorflow.examples.tutorials.mnist import input_data
 
-image_size = 28
-num_labels = 10
-num_channels = 1  # grayscale
+from get_mnist_data import get_mnist_data, reformat
 
-
-def reformat(dataset):
-    dataset = dataset.reshape((-1, image_size, image_size, num_channels)).astype(np.float32)
-    return dataset
-
-
-train_file_path = "../input/mnist_train.csv"
-test_file_path = "../input/mnist_test.csv"
-data = pd.read_csv(train_file_path)
-label_name = "label"
-labels = data.ix[:, label_name]
-dataset = data.drop(label_name, 1)
-X_train, X_test, y_train, y_test = train_test_split(dataset.values, labels, test_size=0.2, random_state=0)
-X_test, X_validation, y_test, y_validation = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
-X_train = reformat(X_train)
-X_validation = reformat(X_validation)
-X_test = reformat(X_test)
-y_train = y_train.as_matrix()
-y_test = y_test.as_matrix()
-y_validation = y_validation.as_matrix()
-submission_dataset = pd.read_csv(test_file_path).values.reshape((-1, image_size, image_size, num_channels)).astype(
-    np.float32)
-
-print('Training set   :', X_train.shape, y_train.shape)
-print('Validation set :', X_validation.shape, y_validation.shape)
-print('Test set       :', X_test.shape, y_test.shape)
-print('Submission data:', submission_dataset.shape)
-
-del labels, data, dataset
-
+mnist = input_data.read_data_sets("../input", reshape=False)
+x_train, y_train = mnist.train.images, mnist.train.labels
+x_validation, y_validation = mnist.validation.images, mnist.validation.labels
+x_test, y_test = reformat(mnist.test.images), mnist.test.labels
 # 因为照片尺寸是28*28*1，而LeNet只接收32*32*n尺寸，所以需要对mnist进行填充,这里对x_train后面两个维度填充，也就是shape[1:2]
-x_train = np.pad(X_train, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
-x_valid = np.pad(X_validation, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
-x_test = np.pad(X_test, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
+x_train = np.pad(x_train, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
+x_valid = np.pad(x_validation, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
+x_test = np.pad(x_test, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
 
 plt.figure(figsize=(1, 1))
 index = random.randint(1, len(x_train))
@@ -54,8 +25,8 @@ plt.imshow(image, cmap='gray')
 print(f'目前显示第{index}张照片')
 
 # 打乱数据集
-x_train,y_train = shuffle(x_train,y_train)
-x_test,y_test = shuffle(x_test,y_test)
+x_train, y_train = shuffle(x_train, y_train)
+x_test, y_test = shuffle(x_test, y_test)
 
 mu, sigma = 0, 0.1
 
@@ -137,7 +108,7 @@ with tf.Session() as sess:
     print()
 
     for i in range(EPOCHS):
-        x_train,y_train = shuffle(x_train,y_train)
+        x_train, y_train = shuffle(x_train, y_train)
         for offset in range(0, num_examples, BATCH_SIZE):
             end = offset + BATCH_SIZE
             batch_x, batch_y = x_train[offset:end], y_train[offset:end]
