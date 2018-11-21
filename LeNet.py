@@ -11,7 +11,7 @@ from get_mnist_data import get_mnist_data, reformat
 mnist = input_data.read_data_sets("../input", reshape=False)
 x_train, y_train = mnist.train.images, mnist.train.labels
 x_validation, y_validation = mnist.validation.images, mnist.validation.labels
-x_test, y_test = reformat(mnist.test.images), mnist.test.labels
+x_test, y_test = mnist.test.images, mnist.test.labels
 # 因为照片尺寸是28*28*1，而LeNet只接收32*32*n尺寸，所以需要对mnist进行填充,这里对x_train后面两个维度填充，也就是shape[1:2]
 x_train = np.pad(x_train, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
 x_valid = np.pad(x_validation, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant')
