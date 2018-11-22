@@ -34,7 +34,25 @@ x_train, y_train = shuffle(x_train, y_train)
 x_test, y_test = shuffle(x_test, y_test)
 
 
-def LeNet(x, weights, biases):
+x = tf.placeholder(tf.float32, (None, 32, 32, 1))
+y = tf.placeholder(tf.int32, (None))
+one_hot_y = tf.one_hot(y, 10)
+weights = {
+    'wc1': init_weight((5, 5, 1, 6)),
+    'wc2': init_weight((5, 5, 6, 16)),
+    'wc3': init_weight((400, 120)),
+    'wc4': init_weight((120, 84)),
+    'wc5': init_weight((84, 10))
+}
+biases = {
+    'bc1': init_bias(6),
+    'bc2': init_bias(16),
+    'bc3': init_bias(120),
+    'bc4': init_bias(84),
+    'bc5': init_bias(10)
+}
+
+def LeNet():
     # conv1_w是conv2d的filter参数，分别为filter_height,filter_width,in_channels,out_channels
     # strides=[1,1,1,1]是指图像在每一位的长度为1
     conv1 = tf.nn.conv2d(input=x, filter=weights['wc1'], strides=[1, 1, 1, 1], padding='VALID') + biases['bc1']
@@ -55,29 +73,10 @@ def LeNet(x, weights, biases):
     fc3 = tf.matmul(fc2, weights['wc5']) + biases['bc5']
     return fc3
 
-
-x = tf.placeholder(tf.float32, (None, 32, 32, 1))
-y = tf.placeholder(tf.int32, (None))
-one_hot_y = tf.one_hot(y, 10)
-weights = {
-    'wc1': init_weight((5, 5, 1, 6)),
-    'wc2': init_weight((5, 5, 6, 16)),
-    'wc3': init_weight((400, 120)),
-    'wc4': init_weight((120, 84)),
-    'wc5': init_weight((84, 10))
-}
-biases = {
-    'bc1': init_bias(6),
-    'bc2': init_bias(16),
-    'bc3': init_bias(120),
-    'bc4': init_bias(84),
-    'bc5': init_bias(10)
-}
-
 rate = 0.001
 EPOCHS = 10
 BATCH_SIZE = 128
-logits = LeNet(x, weights, biases)
+logits = LeNet()
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(logits=logits, labels=one_hot_y)
 loss_opertion = tf.reduce_mean(cross_entropy)
 optimizer = tf.train.AdamOptimizer(learning_rate=rate)
