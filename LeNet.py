@@ -67,8 +67,10 @@ def LeNet():
     fc1 = flatten(pool_2)
 
     fc1 = tf.matmul(fc1, weights['wc3']) + biases['bc3']
+    fc1 = tf.nn.relu(fc1)
 
     fc2 = tf.matmul(fc1, weights['wc4']) + biases['bc4']
+    fc2 = tf.nn.relu(fc2)
 
     fc3 = tf.matmul(fc2, weights['wc5']) + biases['bc5']
     return fc3
